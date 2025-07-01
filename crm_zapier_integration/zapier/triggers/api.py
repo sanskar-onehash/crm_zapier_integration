@@ -4,32 +4,39 @@ import requests
 
 
 def handle_doc_event(doc, method):
-    if not frappe.flags.in_migrate and doc.doctype != "Error Log":
-        if method == "on_update" and doc.modified == doc.creation:
-            return
-        zap_triggers = frappe.db.get_all(
-            "Zapier Trigger",
-            ["name", "target_url"],
-            {
-                "trigger_doctype": doc.doctype,
-                "trigger_method": method,
-                "disabled": False,
-            },
-        )
-        data = json.dumps([doc.as_dict(convert_dates_to_str=True)])
-        for zap_trigger in zap_triggers:
-            try:
-                res = requests.post(zap_trigger.target_url, json=data)
-                if res.status_code == 410:
-                    # No longer active
-                    frappe.get_doc(
-                        "Zapier Trigger", zap_trigger.name
-                    ).unsubscribe_trigger()
+    if (
+        frappe.flags.in_migrate
+        or frappe.flags.in_uninstall
+        or frappe.flags.in_patch
+        or frappe.flags.in_fixtures
+    ):
+        return
+    if doc.doctype == "Error Log":
+        return
+    if method == "on_update" and doc.modified == doc.creation:
+        return
 
-            except Exception as e:
-                frappe.log_error(
-                    "Error triggering Zapier trigger", {"data": data, "error": str(e)}
-                )
+    zap_triggers = frappe.db.get_all(
+        "Zapier Trigger",
+        ["name", "target_url"],
+        {
+            "trigger_doctype": doc.doctype,
+            "trigger_method": method,
+            "disabled": False,
+        },
+    )
+    data = json.dumps([doc.as_dict(convert_dates_to_str=True)])
+    for zap_trigger in zap_triggers:
+        try:
+            res = requests.post(zap_trigger.target_url, json=data)
+            if res.status_code == 410:
+                # No longer active
+                frappe.get_doc("Zapier Trigger", zap_trigger.name).unsubscribe_trigger()
+
+        except Exception as e:
+            frappe.log_error(
+                "Error triggering Zapier trigger", {"data": data, "error": str(e)}
+            )
 
 
 @frappe.whitelist()
