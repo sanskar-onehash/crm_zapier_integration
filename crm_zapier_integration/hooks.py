@@ -83,13 +83,13 @@ app_license = "mit"
 # ------------
 
 # before_install = "crm_zapier_integration.install.before_install"
-# after_install = "crm_zapier_integration.install.after_install"
+after_install = "crm_zapier_integration.install.after_install"
 
 # Uninstallation
 # ------------
 
 # before_uninstall = "crm_zapier_integration.uninstall.before_uninstall"
-# after_uninstall = "crm_zapier_integration.uninstall.after_uninstall"
+after_uninstall = "crm_zapier_integration.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
@@ -137,13 +137,15 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "*": {
+        "after_insert": "crm_zapier_integration.zapier.triggers.api.handle_doc_event",
+        "on_update": "crm_zapier_integration.zapier.triggers.api.handle_doc_event",
+        "on_submit": "crm_zapier_integration.zapier.triggers.api.handle_doc_event",
+        "on_cancel": "crm_zapier_integration.zapier.triggers.api.handle_doc_event",
+        "on_trash": "crm_zapier_integration.zapier.triggers.api.handle_doc_event",
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -241,4 +243,3 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-

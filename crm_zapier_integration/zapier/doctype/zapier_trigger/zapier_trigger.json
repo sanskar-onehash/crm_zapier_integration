@@ -1,0 +1,87 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "naming_series:",
+  "creation": "2025-07-01 13:22:04.302472",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "disabled",
+    "naming_series",
+    "trigger_doctype",
+    "trigger_method",
+    "target_url"
+  ],
+  "fields": [
+    {
+      "fieldname": "trigger_doctype",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Trigger DocType",
+      "options": "DocType",
+      "reqd": 1
+    },
+    {
+      "fieldname": "trigger_method",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Trigger Method",
+      "options": "after_insert\nafter_submit\nafter_cancel",
+      "reqd": 1
+    },
+    {
+      "fieldname": "target_url",
+      "fieldtype": "Data",
+      "label": "Target URL",
+      "options": "URL",
+      "reqd": 1
+    },
+    {
+      "default": "ZAP-TGR-",
+      "fieldname": "naming_series",
+      "fieldtype": "Select",
+      "label": "Series",
+      "options": "ZAP-TGR-",
+      "reqd": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "disabled",
+      "fieldtype": "Check",
+      "label": "Disabled"
+    }
+  ],
+  "in_create": 1,
+  "index_web_pages_for_search": 1,
+  "links": [],
+  "modified": "2025-07-01 15:10:42.887845",
+  "modified_by": "Administrator",
+  "module": "Zapier",
+  "name": "Zapier Trigger",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1
+    },
+    {
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Zapier Manager",
+      "select": 1,
+      "share": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}
